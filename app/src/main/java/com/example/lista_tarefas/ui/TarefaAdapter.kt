@@ -9,14 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.lista_tarefas.R
 import com.example.lista_tarefas.data.Tarefa
 
-class TarefaAdapter(   private var tarefas: List<Tarefa>,
-                       private val onItemClick: (Tarefa) -> Unit
+class TarefaAdapter(
+    private var tarefas: List<Tarefa>,
+    private val onItemClick: (Tarefa) -> Unit,
+    private val onCheckedChange: (Tarefa, Boolean) -> Unit // Adicionado
 ) : RecyclerView.Adapter<TarefaAdapter.TarefaViewHolder>() {
 
     class TarefaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val nome = itemView.findViewById<TextView>(R.id.nome_tarefa)
-        val descricao = itemView.findViewById<TextView>(R.id.descricao_tarefa)
-        val checkConcluida = itemView.findViewById<CheckBox>(R.id.checkbox_concluida)
+        val nome: TextView = itemView.findViewById(R.id.nome_tarefa)
+        val descricao: TextView = itemView.findViewById(R.id.descricao_tarefa)
+        val checkConcluida: CheckBox = itemView.findViewById(R.id.checkbox_concluida)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TarefaViewHolder {
@@ -36,14 +38,12 @@ class TarefaAdapter(   private var tarefas: List<Tarefa>,
         }
 
         holder.checkConcluida.setOnCheckedChangeListener { _, isChecked ->
-            tarefaAtual.concluida = isChecked
-            // Atualize a tarefa no banco de dados ao marcar/desmarcar
+            onCheckedChange(tarefaAtual, isChecked)
         }
     }
 
     override fun getItemCount() = tarefas.size
 
-    // Adicione este método para atualizar a lista de tarefas no adapter
     fun updateTarefas(novasTarefas: List<Tarefa>) {
         tarefas = novasTarefas
         notifyDataSetChanged()

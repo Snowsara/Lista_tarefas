@@ -20,14 +20,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
-        val adapter = TarefaAdapter(emptyList()) { tarefa ->
-            // Ação ao clicar na tarefa (editar ou deletar)
-        }
+        val adapter = TarefaAdapter(emptyList(),
+            onItemClick = { tarefa ->
+                // Abrir um diálogo para editar a tarefa, se quiser
+            },
+            onCheckedChange = { tarefa, isChecked ->
+                val tarefaAtualizada = tarefa.copy(concluida = isChecked)
+                tarefaViewModel.atualizar(tarefaAtualizada)
+            }
+        )
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         // Inicializando o ViewModel
-        tarefaViewModel = ViewModelProvider(this).get(TarefaViewModel::class.java)
+        tarefaViewModel = ViewModelProvider(this)[TarefaViewModel::class.java]
 
         // Observando mudanças na lista de tarefas e atualizando o adapter
         tarefaViewModel.todasTarefas.observe(this, Observer { tarefas ->

@@ -2,7 +2,7 @@ package com.example.lista_tarefas.data
 
 import androidx.lifecycle.LiveData
 
-data class TarefaRepository(private val tarefaDao: TarefaDao){
+class TarefaRepository(private val tarefaDao: TarefaDao){
 
     // Função para inserir uma tarefa
     suspend fun inserir(tarefa: Tarefa) {

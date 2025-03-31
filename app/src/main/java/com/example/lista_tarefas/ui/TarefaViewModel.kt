@@ -14,7 +14,7 @@ class TarefaViewModel (application: Application) : AndroidViewModel(application)
     val todasTarefas: LiveData<List<Tarefa>>
 
     init {
-        val tarefaDao = TarefaDatabase.TarefaDatabase.getDatabase(application).tarefaDao()
+        val tarefaDao = TarefaDatabase.getDatabase(application).tarefaDao()
         repository = TarefaRepository(tarefaDao)
         todasTarefas = repository.todasTarefas
     }
